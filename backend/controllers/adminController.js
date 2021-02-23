@@ -1,12 +1,11 @@
 const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+const { sendSms } = require("./notificatiions/sendSms");
 const {
   adminValidations,
   LoginValidations,
 } = require("./validation/validations");
-const { user } = require("../config/config");
-
 exports.getAllAdmins = async (req, res) => {
   try {
     const admins = await Admin.find();
@@ -52,12 +51,12 @@ exports.loginAdmin = async (req, res) => {
   const { error } = LoginValidations(req.body);
   if (error) return res.status(500).send(error.details[0].message);
 
-  const admin = await Admin.findOne({ phone: req.body.phone });
+  const admin = await Admin.findOne({ phone: phone });
   if (!admin) return res.status(400).send("Phone is Found");
 
   const validPass = await bcrypt.compare(password, admin.password);
   if (!validPass) return res.status(400).send("Phone or password is incorrect");
 
-  const token = jwt.sign({ _id: admin._id }, "TokenKey");
+  const token = jwt.sign({ _id: admin._id }, "tokenSecret");
   res.header("auth-token", token).send(token);
 };

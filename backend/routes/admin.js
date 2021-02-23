@@ -7,8 +7,8 @@ const {
   getOneAdmin,
   loginAdmin,
 } = require("../controllers//adminController");
-router.get("/", verify, getAllAdmins);
-router.post("/", addAdmin);
+router.get("/", getAllAdmins);
+router.post("/", verify, addAdmin);
 router.get("/:id", getOneAdmin);
 router.post("/login", loginAdmin);
 

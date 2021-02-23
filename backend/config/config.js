@@ -1,8 +1,9 @@
 const mongoose = require("mongoose");
 
-mongoose.connect("mongodb://localhost/onemillion", {
+mongoose.connect(process.env.DATABASE, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
+  DeprecationWarning: true,
 });
 const db = mongoose.connection;
 module.exports = db;

@@ -11,10 +11,12 @@ const participantSchema = new mongoose.Schema({
   },
   isValid: {
     type: Boolean,
-    required: true,
   },
   online: {
     type: Boolean,
+  },
+  email: {
+    type: String,
     required: true,
   },
   phone: {
@@ -24,6 +26,9 @@ const participantSchema = new mongoose.Schema({
   password: {
     type: String,
     required: true,
+  },
+  score: {
+    type: Number,
   },
 });
 
