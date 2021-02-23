@@ -1,9 +1,8 @@
 var TeleSignSDK = require("telesignsdk");
 
 exports.sendSms = (phone) => {
-  const customerId = "B3E89761-F6E5-4F54-AEEF-4A7E3C8C5993";
-  const apiKey =
-    "U77mDQdHDL4gRvOnUNwEOe0a7r91Ssi0iXO0r5Lgkgp99w2+OPYsmhTwIJ0k1yIIimwQLMkZRb1PYt0sSoKi/g==";
+  const customerId = process.env.CUSTOMER_ID;
+  const apiKey = process.env.API_KEY;
   const rest_endpoint = "https://rest-api.telesign.com";
   const timeout = 10 * 1000; // 10 secs
 
@@ -15,7 +14,7 @@ exports.sendSms = (phone) => {
     // userAgent
   );
 
-  const phoneNumber = "212"+phone;
+  const phoneNumber = "212" + phone;
   const accountLifeCycleEvent = "create";
 
   console.log("## ScoreClient.score ##");
