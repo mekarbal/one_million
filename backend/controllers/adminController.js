@@ -57,6 +57,6 @@ exports.loginAdmin = async (req, res) => {
   const validPass = await bcrypt.compare(password, admin.password);
   if (!validPass) return res.status(400).send("Phone or password is incorrect");
 
-  const token = jwt.sign({ _id: admin._id }, "tokenSecret");
+  const token = jwt.sign({ _id: admin._id }, process.env.TOKEN_ADMIN);
   res.header("auth-token", token).send(token);
 };

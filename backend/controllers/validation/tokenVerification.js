@@ -1,5 +1,4 @@
 const jwt = require("jsonwebtoken");
-require("dotenv").config();
 module.exports = function (req, res, next) {
   const token = req.header("auth-token");
 
@@ -8,14 +7,13 @@ module.exports = function (req, res, next) {
   }
 
   try {
-    const verfied = jwt.verify(token, process.env.ADMIN_TOKEN_SECRET);
+    const verfied = jwt.verify(token, process.env.TOKEN_ADMIN);
     req.admin = verfied;
     next();
   } catch (error) {
-    res.status(400).send("Invalid token");
+    res.status(400).send("Invalid token " + error.message);
   }
 };
-
 
 // module.exports = function (req, res, next) {
 //   const token = req.header("auth-token");

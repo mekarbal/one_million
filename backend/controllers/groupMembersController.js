@@ -22,6 +22,8 @@ exports.addGroup = async (req, res) => {
 
     try {
       const newGroup = await group.save();
+      participant.score = 0;
+      participant.save();
       res.status(201).json(newGroup);
     } catch (error) {
       res.status(500).send({ message: error.message });
@@ -35,8 +37,9 @@ exports.joinGroup = async (req, res) => {
   const group_code = req.body.group_code;
   const id_participant = req.body.id_participant;
   const participant = await Participant.findOne({ _id: id_participant });
-  if (participant.isValid == false)
+  if (participant.isValid == false) {
     return res.status(400).send("Your participation is not valid ");
+  }
   const groupExist = await Group.findOne({ group_code: group_code });
   if (!groupExist)
     return res
@@ -59,6 +62,8 @@ exports.joinGroup = async (req, res) => {
             if (counter == 4) {
               res.send("Game started get your question /quest/random");
             } else {
+              participant.score = 0;
+              participant.save();
               res.send("waiting for other players");
             }
           }
@@ -103,7 +108,6 @@ exports.getGroupByCode = async (req, res) => {
       return o.score == bestScore;
     });
     res.send([finalWinner, { message: "you are the winner" }]);
-
   } catch (error) {
     res.status(500).send({ message: error.message });
   }
