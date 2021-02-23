@@ -2,6 +2,8 @@ const Admin = require("../models/admin");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const { sendSms } = require("./notificatiions/sendSms");
+const log = require("../controllers/logs/log");
+const logs = require("../models/logs");
 const {
   adminValidations,
   LoginValidations,
@@ -9,9 +11,27 @@ const {
 exports.getAllAdmins = async (req, res) => {
   try {
     const admins = await Admin.find();
+    log(
+      {
+        file: "adminControler.js",
+        line: "11",
+        info: "get all admins",
+        type: "INFO",
+      },
+      logs
+    );
     res.json(admins);
   } catch (error) {
     res.status(500).json({ message: error.message });
+    log(
+      {
+        file: "adminController.js",
+        line: "23",
+        info: err.message,
+        type: "Warning",
+      },
+      logs
+    );
   }
 };
 exports.addAdmin = async (req, res) => {
@@ -32,16 +52,52 @@ exports.addAdmin = async (req, res) => {
   try {
     const newAdmin = await admin.save();
     res.status(200).json(newAdmin);
+    log(
+      {
+        file: "adminController.js",
+        line: "54",
+        info: "add new admin",
+        type: "Info",
+      },
+      logs
+    );
   } catch (error) {
     res.status(500).json({ message: error.message });
+    log(
+      {
+        file: "adminController.js",
+        line: "56",
+        info: err.message,
+        type: "Warning",
+      },
+      logs
+    );
   }
 };
 exports.getOneAdmin = async (req, res) => {
   try {
     admin = await Admin.findById(req.params.id);
     admin === null ? res.status(404).json(admin) : res.status(200).send(admin);
+    log(
+      {
+        file: "adminController.js",
+        line: "80",
+        info: "get one admin",
+        type: "Info",
+      },
+      logs
+    );
   } catch (error) {
     res.status(500).json({ message: error.message });
+    log(
+      {
+        file: "adminController.js",
+        line: "73",
+        info: err.message,
+        type: "Warning",
+      },
+      logs
+    );
   }
 };
 exports.loginAdmin = async (req, res) => {

@@ -1,12 +1,32 @@
 const Group = require("../models/group_members");
 const Participant = require("../models/participant");
+const log = require("../controllers/logs/log");
+const logs = require("../models/logs");
 
 exports.getAllGroups = async (req, res) => {
   try {
     const groups = await Group.find();
     res.json(groups);
+    log(
+      {
+        file: "groupMembersControler.js",
+        line: "11",
+        info: "get all group members",
+        type: "INFO",
+      },
+      logs
+    );
   } catch (error) {
     res.status(500).send({ message: error.message });
+    log(
+      {
+        file: "groupMembersControler.js",
+        line: "21",
+        info: error.message,
+        type: "Warning",
+      },
+      logs
+    );
   }
 };
 
@@ -25,8 +45,26 @@ exports.addGroup = async (req, res) => {
       participant.score = 0;
       participant.save();
       res.status(201).json(newGroup);
+      log(
+        {
+          file: "groupMembersControler.js",
+          line: "48",
+          info: "add new group",
+          type: "INFO",
+        },
+        logs
+      );
     } catch (error) {
       res.status(500).send({ message: error.message });
+      log(
+        {
+          file: "groupMembersControler.js",
+          line: "58",
+          info: error.message,
+          type: "Critical",
+        },
+        logs
+      );
     }
   } else {
     res.send({ message: "Your participation is not valid" });
