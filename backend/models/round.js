@@ -13,6 +13,9 @@ const roundSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "questiontokens",
   },
+  is_answeres: {
+    type: Boolean,
+  },
 });
 
 module.exports = mongoose.model("Round", roundSchema);
