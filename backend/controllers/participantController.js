@@ -66,8 +66,8 @@ exports.participValidation = async (req, res) => {
     }
     participant.isValid = req.body.isValid;
     const updatedParticipant = await participant.save();
-    // sendMail(updatedParticipant.email);
-    // sendSms(updatedParticipant.phone);
+    sendMail(updatedParticipant.email);
+    sendSms(updatedParticipant.phone);
     res.json(updatedParticipant);
   } catch (error) {
     res.status(400).json({ message: error.message });
