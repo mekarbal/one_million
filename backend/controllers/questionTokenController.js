@@ -21,8 +21,9 @@ exports.addQuestionToken = async (req, res) => {
   const grp_code = group_members.group_code;
   const question = await Question.findById(id_question);
   const participant = await Participant.findById(id_participant);
+  console.log(grp_code);
   const roundsCount = await getRoundsCount(grp_code);
-
+  console.log(roundsCount);
   if (roundsCount == 2) {
     await Round.updateMany({ $set: { is_answered: false } });
     res.send("Game over");
@@ -58,12 +59,12 @@ exports.addQuestionToken = async (req, res) => {
   }
 };
 
-exports.getRoundsCount = async (group_code) => {
+async function getRoundsCount(group_code) {
   var i = 0;
   const rounds = await Round.aggregate([
     {
       $lookup: {
-        from: "groupmembers",
+        from: "groupmemebers",
         localField: "id_group_members",
         foreignField: "_id",
         as: "group_members",
@@ -72,8 +73,9 @@ exports.getRoundsCount = async (group_code) => {
   ]);
 
   rounds.map((group) => {
+    console.log(group);
     if (group.group_members[0].group_code == group_code) i++;
   });
 
   return i;
-};
+}
