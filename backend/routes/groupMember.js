@@ -9,7 +9,11 @@ const {
 } = require("../controllers/groupMembersController");
 
 router.get("/", getAllGroups);
+
 router.post("/", addGroup);
+
 router.post("/join", joinGroup);
+
 router.get("/final", getGroupByCode);
+
 module.exports = router;

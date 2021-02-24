@@ -3,6 +3,7 @@ const Participant = require("../models/participant");
 const log = require("../controllers/logs/log");
 const logs = require("../models/logs");
 
+//get all groups
 exports.getAllGroups = async (req, res) => {
   try {
     const groups = await Group.find();
@@ -30,6 +31,7 @@ exports.getAllGroups = async (req, res) => {
   }
 };
 
+//adding new group
 exports.addGroup = async (req, res) => {
   const id_participant = req.body.id_participant;
   const participant = await Participant.findOne({ _id: id_participant });
@@ -44,7 +46,11 @@ exports.addGroup = async (req, res) => {
       const newGroup = await group.save();
       participant.score = 0;
       participant.save();
-      res.status(201).json(newGroup);
+      res.status(201).json({
+        message: "groub created successfully",
+        newGroup,
+      });
+
       log(
         {
           file: "groupMembersControler.js",
@@ -55,7 +61,8 @@ exports.addGroup = async (req, res) => {
         logs
       );
     } catch (error) {
-      res.status(500).send({ message: error.message });
+      res.status(500).send({ error: error.message });
+
       log(
         {
           file: "groupMembersControler.js",
@@ -67,18 +74,20 @@ exports.addGroup = async (req, res) => {
       );
     }
   } else {
-    res.send({ message: "Your participation is not valid" });
+    res.send({ error: "Your participation is not valid" });
   }
 };
 
 exports.joinGroup = async (req, res) => {
-  const group_code = req.body.group_code;
-  const id_participant = req.body.id_participant;
+  const { group_code, id_participant } = req.body;
   const participant = await Participant.findOne({ _id: id_participant });
+
   if (participant.isValid == false) {
     return res.status(400).send("Your participation is not valid ");
   }
+
   const groupExist = await Group.findOne({ group_code: group_code });
+
   if (!groupExist)
     return res
       .status(400)
@@ -107,13 +116,15 @@ exports.joinGroup = async (req, res) => {
           }
         );
       } catch (error) {
-        res.status(500).send({ message: error.message });
+        res.status(500).send({ error: error.message });
       }
     } else {
-      res.send({ message: "Group is Full" });
+      res.send({ error: "Group is Full" });
     }
   });
 };
+
+//get groub code
 exports.getGroupByCode = async (req, res) => {
   var group_participants = [];
 
@@ -147,6 +158,6 @@ exports.getGroupByCode = async (req, res) => {
     });
     res.send([finalWinner, { message: "you are the winner" }]);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).send({ error: error.message });
   }
 };

@@ -1,6 +1,7 @@
 const Question = require("../models/question");
 const Round = require("../models/round");
 
+//add question
 exports.questionAdd = async (req, res) => {
   const question = new Question({
     quest: req.body.quest,
@@ -11,20 +12,26 @@ exports.questionAdd = async (req, res) => {
 
   try {
     const savedQuestion = await question.save();
-    res.send(savedQuestion);
+    res.json({
+      message: "gestion is created",
+      savedQuestion,
+    });
   } catch (error) {
-    res.status(400).send(error);
+    res.status(400).json({ error: error.message });
   }
 };
 
+//get alla question
 exports.getAllQuestions = async (req, res) => {
   try {
     questions = await Question.find();
     res.json(questions);
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).send({ error: error.message });
   }
 };
+
+//get random question
 exports.getRandomQuestion = async (req, res) => {
   try {
     Question.countDocuments((err, count) => {
@@ -51,6 +58,6 @@ exports.getRandomQuestion = async (req, res) => {
         });
     });
   } catch (error) {
-    res.status(500).send({ message: error.message });
+    res.status(500).send({ error: error.message });
   }
 };

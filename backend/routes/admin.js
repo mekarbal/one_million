@@ -7,9 +7,13 @@ const {
   getOneAdmin,
   loginAdmin,
 } = require("../controllers//adminController");
+
 router.get("/", verify, getAllAdmins);
+
 router.post("/", verify, addAdmin);
+
 router.get("/:id", getOneAdmin);
+
 router.post("/login", loginAdmin);
 
 module.exports = router;

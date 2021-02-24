@@ -4,12 +4,14 @@ const Group = require("../models/group_members");
 const Question = require("../models/question");
 const Participant = require("../models/participant");
 
+//add question
 exports.addQuestionToken = async (req, res) => {
-  var id_question = req.body.id_question;
-  var id_participant = req.body.id_participant;
-  var participant_answer = req.body.participant_answer;
-  var grp_code = req.body.grp_code;
-  console.log(id_participant);
+  const {
+    id_question,
+    id_participant,
+    participant_answer,
+    grp_code,
+  } = req.body;
 
   const questionExist = await Round.findOne({
     id_question: id_question,
@@ -21,12 +23,12 @@ exports.addQuestionToken = async (req, res) => {
     id_participant: id_participant,
     grp_code: grp_code,
   });
-  // const grp_code = group_members.group_code;
+
   const question = await Question.findById(id_question);
   const participant = await Participant.findById(id_participant);
-  console.log(grp_code);
+
   const roundsCount = await getRoundsCount(grp_code);
-  console.log(roundsCount);
+
   if (roundsCount == 14) {
     await Round.updateMany({ $set: { is_answered: false } });
     res.send("Game over");
@@ -62,6 +64,7 @@ exports.addQuestionToken = async (req, res) => {
   }
 };
 
+//checking if round is finshed
 async function getRoundsCount(group_code) {
   var i = 0;
   const rounds = await Round.aggregate([
