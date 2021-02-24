@@ -7,9 +7,9 @@ const {
   joinGroup,
   getGroupByCode,
 } = require("../controllers/groupMembersController");
-
-router.get("/", getAllGroups);
-router.post("/", addGroup);
-router.post("/join", joinGroup);
+const verifyParticipToken = require("../controllers/validation/tokenParticpation");
+router.get("/",verifyParticipToken, getAllGroups);
+router.post("/",verifyParticipToken, addGroup);
+router.post("/join",verifyParticipToken, joinGroup);
 router.get("/final", getGroupByCode);
 module.exports = router;

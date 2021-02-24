@@ -4,7 +4,8 @@ const {
   getAllQuestions,
   getRandomQuestion,
 } = require("../controllers/questionController");
-router.get("/", getAllQuestions);
+const verify = require("../controllers/validation/tokenVerification");
+router.get("/", verify, getAllQuestions);
 router.get("/random", getRandomQuestion);
-router.post("/", questionAdd);
+router.post("/", verify, questionAdd);
 module.exports = router;
