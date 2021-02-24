@@ -13,7 +13,7 @@ const roundSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: "questiontokens",
   },
-  is_answeres: {
+  is_answered: {
     type: Boolean,
   },
 });

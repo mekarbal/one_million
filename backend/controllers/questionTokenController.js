@@ -8,7 +8,7 @@ exports.addQuestionToken = async (req, res) => {
   var id_question = req.body.id_question;
   var id_participant = req.body.id_participant;
   var participant_answer = req.body.participant_answer;
-
+  var grp_code = req.body.grp_code;
   console.log(id_participant);
 
   const questionExist = await Round.findOne({
@@ -17,14 +17,17 @@ exports.addQuestionToken = async (req, res) => {
   });
   if (questionExist) return res.status(400).send("Too late");
 
-  const group_members = await Group.findOne({ id_participant: id_participant });
-  const grp_code = group_members.group_code;
+  const group_members = await Group.findOne({
+    id_participant: id_participant,
+    grp_code: grp_code,
+  });
+  // const grp_code = group_members.group_code;
   const question = await Question.findById(id_question);
   const participant = await Participant.findById(id_participant);
   console.log(grp_code);
   const roundsCount = await getRoundsCount(grp_code);
   console.log(roundsCount);
-  if (roundsCount == 2) {
+  if (roundsCount == 14) {
     await Round.updateMany({ $set: { is_answered: false } });
     res.send("Game over");
   } else {

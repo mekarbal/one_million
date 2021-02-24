@@ -20,3 +20,5 @@ app.use("/qtoken", questionTokenRouter);
 app.listen(process.env.PORT, () =>
   console.log("connected to server 5000 " + process.env.PORT)
 );
+
+module.exports = app;
